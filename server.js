@@ -1,6 +1,11 @@
 const { Server } = require("socket.io");
-const io = new Server(3000, {
-  cors: { origin: "*" } // autorise toutes les origines
+const PORT = process.env.PORT || 3000;
+
+const io = new Server(PORT, {
+  cors: {
+    origin: "*", // ou bien ["https://yesfun.netlify.app"]
+    methods: ["GET", "POST"]
+  }
 });
 
 const rooms = {};
