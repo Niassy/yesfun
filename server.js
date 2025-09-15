@@ -19,18 +19,18 @@ io.on("connection", (socket) => {
   /**
    * Création d'une room par l'hôte
    */
-  socket.on("createRoom", ({ roomId }) => {
+  socket.on("createRoom", ({ player }) => {
 
-      const roomId = uuidv4().slice(0, 6);
+      const newRoomId = uuidv4().slice(0, 6);
 
   // Créer la room
-  rooms[roomId] = { host: socket.id, players: [{ id: socket.id, name: player }], state: null };
+  rooms[newRoomId] = { host: socket.id, players: [{ id: socket.id, name: player }], state: null };
 
   // Ajouter le créateur dans la room
-  socket.join(roomId);
+  socket.join(newRoomId);
 
   // Renvoyer le code unique au créateur
-  socket.emit("roomCreated", roomId);
+  socket.emit("roomCreated", newRoomId);
 
   console.log(`✅ Room ${roomId} créée par ${player} (${socket.id})`);
   });
