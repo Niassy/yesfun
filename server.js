@@ -11,6 +11,8 @@ const io = new Server(PORT, {
 // rooms[roomId] = { host: socketId, players: [], state: {...} }
 const rooms = {};
 
+const { v4: uuidv4 } = require("uuid"); 
+
 io.on("connection", (socket) => {
   console.log("Nouvel utilisateur:", socket.id);
 
@@ -18,9 +20,19 @@ io.on("connection", (socket) => {
    * Création d'une room par l'hôte
    */
   socket.on("createRoom", ({ roomId }) => {
-    rooms[roomId] = { host: socket.id, players: [], state: null };
-    socket.join(roomId);
-    console.log(`✅ Room ${roomId} créée par ${socket.id}`);
+
+      const roomId = uuidv4().slice(0, 6);
+
+  // Créer la room
+  rooms[roomId] = { host: socket.id, players: [{ id: socket.id, name: player }], state: null };
+
+  // Ajouter le créateur dans la room
+  socket.join(roomId);
+
+  // Renvoyer le code unique au créateur
+  socket.emit("roomCreated", roomId);
+
+  console.log(`✅ Room ${roomId} créée par ${player} (${socket.id})`);
   });
 
   /**
