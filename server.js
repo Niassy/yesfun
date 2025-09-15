@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
   socket.join(newRoomId);
 
   // Renvoyer le code unique au créateur
-  socket.emit("roomCreated", newRoomId);
+  socket.emit("roomCreated",  { roomId: newRoomId });
 
   console.log(`✅ Room ${roomId} créée par ${player} (${socket.id})`);
   });
